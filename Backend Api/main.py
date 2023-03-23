@@ -53,20 +53,12 @@ def home():
 def data():
     received = request.get_json()
     print(received)
-    # conn = sqlite3.connect('test.db')
-    # c = conn.cursor()
-    # last_entry = c.execute("SELECT * FROM Attendance WHERE rowid = (SELECT MAX(rowid) FROM Attendance)").fetchall()
-    # newtotal = len(c.execute("SELECT * FROM Attendance ").fetchall())
-    # conn.close()
-    # if newtotal>total:
-    #     total=newtotal
-    #     newtotal+=1
-    #     if last_entry[5]==datetime.now().strftime("%Y-%m-%d"):
-    #         return {"lastid": last_entry}
-    #     else:
-    #         return {"lastid": "nolast"}
-    # else:
-    return {"lastid": "nolast"}
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    date = datetime.now().strftime("%Y-%m-%d")
+    data = c.execute("SELECT * FROM Attendance WHERE day = ?", (date,)).fetchall()
+    print(data)
+    return jsonify({"data": data})
 
 def isPresent(Hex_id, day): 
     conn = sqlite3.connect('test.db')
